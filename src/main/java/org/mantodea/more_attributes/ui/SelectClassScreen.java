@@ -126,7 +126,6 @@ public class SelectClassScreen extends Screen {
     }
 
     public void renderItems(GuiGraphics graphics, int mouseX, int mouseY) {
-
         int lineHeight = font.lineHeight;
         int lineWidth = 22;
         int itemSize = 24;
@@ -136,15 +135,14 @@ public class SelectClassScreen extends Screen {
         int lineSpacing = 0;
         int quantityBreak = 8; //每循环多少次物品时换行
 
-        List<Map.Entry<String, Integer>> entries = classData.startItems.entrySet().stream().toList();
-
-        for (Map.Entry<String, Integer> entry : entries)
+        for (int i = 0; i < classData.startItems.size(); i++)
         {
-            Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(entry.getKey()));
+            var entry = classData.startItems.get(i);
+            Item item = entry.getItem();
 
             if (item == null) continue;
 
-            ItemStack stack = new ItemStack(item, entry.getValue());
+            ItemStack stack = new ItemStack(item, entry.getCount());
 
             if (stack.isEmpty()) continue;
 
@@ -158,7 +156,7 @@ public class SelectClassScreen extends Screen {
 
             spacing += lineWidth;
 
-            if ((entries.indexOf(entry) + 1) % quantityBreak == 0){
+            if ((i + 1) % quantityBreak == 0){
                 spacing = 0;
                 lineSpacing += (int) (lineHeight * 2.5);
             }

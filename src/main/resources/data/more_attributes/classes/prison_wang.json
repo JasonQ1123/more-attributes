@@ -11,15 +11,13 @@
         "skill": 10,
         "luck": 10
     },
-    "startItems": {
-        
-            "minecraft:gunpowder":1,
-            "create:schematicannon":1,
-            "create:schematic_table":1,
-            "create:empty_schematic":1,
-            "create:clipboard":1,
-            "minecraft:barrel":1
-        
-    },
+    "startItems": [
+      { "item": "minecraft:gunpowder", "count": 1 },
+      { "item": "create:schematicannon", "count": 1 },
+      { "item": "create:schematic_table", "count": 1 },
+      { "item": "create:empty_schematic", "count": 1 },
+      { "item": "create:clipboard", "count": 1 },
+      { "item": "minecraft:barrel", "count": 1 }
+    ],
     "displayCondition": []
 }

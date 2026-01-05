@@ -45,8 +45,9 @@ public record SyncDataToClientMessage(JsonArray data) {
     @OnlyIn(Dist.CLIENT)
     private void handle() {
         Minecraft minecraft = Minecraft.getInstance();
-
-        Gson gson = new GsonBuilder().create();
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(ClassData.class, ClassData.deserializer)
+                .create();
 
         Player player = minecraft.player;
 

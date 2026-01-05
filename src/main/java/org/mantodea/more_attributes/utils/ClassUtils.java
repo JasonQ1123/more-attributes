@@ -6,6 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -52,10 +53,11 @@ public class ClassUtils {
     }
 
     public static void setPlayerClass(Player player, ClassData classData) {
+        classData.convert_item();
         player.getCapability(MoreAttributes.PLAYER_CLASS).resolve().ifPresent(cap -> {
             cap.setClass(classData);
-
-            TryOpenSelectScreen(player);
+            if (!(player instanceof ServerPlayer))
+                TryOpenSelectScreen(player);
         });
     }
 

@@ -1,6 +1,7 @@
 package org.mantodea.more_attributes.events;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -24,7 +25,6 @@ import java.util.Objects;
 public class CommonEvents {
     @SubscribeEvent
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
-
         Player player = event.getEntity();
 
         if (player instanceof ServerPlayer serverPlayer)
@@ -33,7 +33,9 @@ public class CommonEvents {
 
             var classData = cap == null ? new ClassData() : cap.getClassData();
 
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(ClassData.class, ClassData.serializer)
+                    .create();
 
             JsonArray classes = gson.toJsonTree(ClassLoader.Classes).getAsJsonArray();
 

@@ -11,8 +11,16 @@
         "skill": 10,
         "luck": 10
     },
-    "startItems": {
-        "minecraft:diamond": 10
-    },
+    "startItems": [
+        {
+            "item": "minecraft:diamond",
+            "count": 64
+        },
+        {
+            "item": "minecraft:netherite_sword",
+            "count": 1,
+            "nbt": "{Damage:0,Enchantments:[{id:\"minecraft:fire_aspect\",lvl:2}]}"
+        }
+    ],
     "displayCondition": []
 }

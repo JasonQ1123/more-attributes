@@ -2,11 +2,13 @@ package org.mantodea.more_attributes.messages;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkEvent;
 import org.mantodea.more_attributes.datas.ClassData;
+import org.mantodea.more_attributes.datas.ClassLoader;
 import org.mantodea.more_attributes.utils.ClassUtils;
 import org.mantodea.more_attributes.utils.ModifierUtils;
 
@@ -47,12 +49,18 @@ public record SyncClassToClientMessage(ClassData data) {
             buf.writeInt(entry.getValue());
         }
 
-        buf.writeInt(data.startItems.size());
+        buf.writeInt(data.startItemsRecord.size());
 
-        for (var entry : data.startItems.entrySet()) {
-            buf.writeUtf(entry.getKey());
-
-            buf.writeInt(entry.getValue());
+        for (var item : data.startItemsRecord) {
+            var id = GsonHelper.getAsString(item, "item");
+            buf.writeUtf(id);
+            int count = GsonHelper.getAsInt(item, "count", 1);
+            buf.writeInt(count);
+            buf.writeBoolean(item.has("nbt"));
+            if (item.has("nbt")) {
+                String nbtString = GsonHelper.getAsString(item, "nbt");
+                buf.writeUtf(nbtString);
+            }
         }
     }
 
@@ -66,10 +74,10 @@ public record SyncClassToClientMessage(ClassData data) {
 
     @OnlyIn(Dist.CLIENT)
     private void handle() {
-        Player player = (Player) Minecraft.getInstance().player;
+        ClassLoader.convert_item();
+        Player player = Minecraft.getInstance().player;
 
         if (player == null || data == null) return;
-
         ClassUtils.setPlayerClass(player, data);
     }
 }
